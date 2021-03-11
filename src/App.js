@@ -1,6 +1,29 @@
-import React from 'react'
+/* eslint-disable no-undef */
+import React, { useState } from 'react'
+import { isEmpty } from 'lodash'
+import shortid from 'shortid';
+
 
 function App() {
+	const [task, setTask] = useState("")
+const [tasks, setTasks] = useState([]);
+
+	//Methods:
+	const addTask = (e) => {		
+			e.preventDefault();
+			if (isEmpty(task)){
+				console.log("Task empty");
+				return;
+			}
+
+			const newTask = {
+				id: shortid.generate(),
+				task
+			};
+
+			setTask("");
+	}
+
 	return (
 		<div className="container mt-5">
 			<h1>Tareas</h1>
@@ -18,10 +41,16 @@ function App() {
 				</div>
 				<div className="col-4">
 					<h4 className="text-center">Formulario</h4>
-					<form>
-						<input type="text" className="form-control mb-2" placeholder="Ingrese La Tarea....." />
-					</form>
+					<form onSubmit={addTask}>
+						<input 
+						type="text" 
+						className="form-control mb-2" 
+						placeholder="Ingrese la Tarea....."  
+						onChange={(text) =>setTask(text.target.value)}
+						value={task}
+						/>
 					<button className="btn btn-dark btn-block" type="submit">Agregar</button>
+					</form>
 				</div>
 			</div>
 
