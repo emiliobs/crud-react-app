@@ -1,6 +1,7 @@
-/* eslint-disable no-undef */
+
 import React, { useState } from 'react'
 import { isEmpty, size } from 'lodash'
+
 import shortid from 'shortid';
 
 
@@ -9,19 +10,36 @@ function App() {
 	const [tasks, setTasks] = useState([]);
 	const [editMode, setEditMode] = useState(false);
 	const [id, setId] = useState("");
+	const [error, setError] = useState(null);
 
-	//css
-	const h5Style = {
-		color: "red"
-	};
+
+const style ={
+	color: 'red'
+};
 
 	//Methods:
+
+	const validForm = () => {
+		let isValid = true;
+		setError(null);
+		if (isEmpty(task)) {
+			setError("Debes Ingresar una Tarea.")
+			isValid = false;
+		}
+		return isValid;
+
+	};
+
 	const addTask = (e) => {
 		e.preventDefault();
-		if (isEmpty(task)) {
-			console.log("Task empty");
+		// if (isEmpty(task)) {
+		// 	console.log("Task empty");
+		// 	return;
+		// };
+
+		if (!validForm()) {
 			return;
-		};
+		}
 
 		const newTask = {
 			id: shortid.generate(),
@@ -34,12 +52,14 @@ function App() {
 	};
 	const saveTask = (e) => {
 		e.preventDefault();
-		if (isEmpty(task)) {
-			console.log("Task Empty!");
+		// if (isEmpty(task)) {
+		// 	console.log("Task Empty!");
+		// 	return;
+		// }
+		if (!validForm()) {
 			return;
 		}
-
-		const editedTasks = tasks.map(t => t.id === id ? {id, name: task} : t);
+		const editedTasks = tasks.map(t => t.id === id ? { id, name: task } : t);
 		setTasks(editedTasks);
 		setEditMode(false);
 		setTask("");
@@ -79,24 +99,28 @@ function App() {
 												className="btn btn-danger btn-sm float-right"
 												onClick={() => deleteTask(task.id)}>
 												Eliminar
-									</button>
+											</button>
 											<button
 												className="btn btn-warning btn-sm float-right mx-2"
 												onClick={() => editTask(task)}>
 												Editar
-										</button>
+											</button>
 										</li>
 									))
 								}
 							</ul>
 						) : (
-							<h5 className="text-center" style={h5Style}>No hay  Tareas Programadas!</h5>
+							// <h5 className="text-center" style={h5Style}>No hay  Tareas Programadas!</h5>							
+								<li  className="text-center list-group-item" style={style}>No hay Tarea Programadas.</li>							
 						)
 					}
 				</div>
 				<div className="col-4">
 					<h4 className="text-center">{editMode ? "Editar Tarea." : "Agregar Tarea."}</h4>
 					<form onSubmit={editMode ? saveTask : addTask}>
+						{
+							 error &&  <span className="text-danger mb-2">{ error }</span>
+						}
 						<input
 							type="text"
 							className="form-control mb-2"
