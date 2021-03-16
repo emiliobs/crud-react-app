@@ -111,7 +111,7 @@ const style ={
 							</ul>
 						) : (
 							// <h5 className="text-center" style={h5Style}>No hay  Tareas Programadas!</h5>							
-								<li  className="text-center list-group-item" style={style}>No hay Tarea Programadas.</li>							
+								<li  className="text-center list-group-item" style={style}>No hay Tareas Programadas.</li>							
 						)
 					}
 				</div>
